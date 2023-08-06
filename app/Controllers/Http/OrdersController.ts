@@ -8,7 +8,7 @@ export default class OrdersController {
             await auth.use("api").authenticate()
 
             const user = auth.use('api').user
-            const { name_service, status, price, address } = request.all()
+            const { name_service, status, price, address, map_url } = request.all()
 
             const newOrder = new Order()
             newOrder.fill({
@@ -16,6 +16,7 @@ export default class OrdersController {
                 status,
                 price,
                 address,
+                map_url,
                 user_id: user?.id
             })
 

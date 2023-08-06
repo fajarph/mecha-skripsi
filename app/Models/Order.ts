@@ -17,6 +17,9 @@ export default class Order extends BaseModel {
   @column()
   public address: string
 
+  @column()
+  public map_url: string
+
   @column({ serializeAs: null })
   public user_id: number | null
 

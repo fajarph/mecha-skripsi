@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.string('status', 50).notNullable
       table.string('price').notNullable
       table.string('address', 550).notNullable
+      table.string('map_url').notNullable
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
