@@ -3,6 +3,28 @@ import User from "App/Models/User";
 
 export default class UsersController {
 
+    public async getUser({ response, auth }: HttpContextContract) {
+        try {
+            await auth.use("api").authenticate()
+
+            const output = await User.query()
+                .preload("orders", (query) => {
+                    query.select("id", "name_service", "status", "price", "address", "map_url", "created_at")
+                })
+                .select("id", "name", "no_telp", "email")
+
+            response.status(200).json({
+                status: 200,
+                user: output
+            })
+        } catch (error) {
+            response.status(401).json({
+                status: 401,
+                msg : error.message
+            })
+        }
+    }
+
     public async getUserByToken({ response, auth }: HttpContextContract) {
         try {
             await auth.use("api").authenticate()
