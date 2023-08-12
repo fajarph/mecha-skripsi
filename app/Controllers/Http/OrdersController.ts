@@ -3,6 +3,24 @@ import Order from "App/Models/Order";
 
 export default class OrdersController {
 
+    public async getOrder({ response, auth }: HttpContextContract) {
+        try {
+            await auth.use("api").authenticate()
+
+            const output = await Order.query().select("id", "name_service", "status", "price", "address", "map_url", "created_at")
+
+            response.status(200).json({
+                status: 200,
+                order: output
+            })
+        } catch (error) {
+            response.status(404).json({
+                status: 404,
+                msg: error.message
+            })
+        }
+    }
+
     public async createOrder({ request, response, auth} : HttpContextContract) {
         try {
             await auth.use("api").authenticate()
