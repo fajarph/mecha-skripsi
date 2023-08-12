@@ -21,6 +21,7 @@ export default class AuthController {
             return {
                 status: 200,
                 token: token.token,
+                role: user.role,
                 msg: "Login successful"
             }
         } catch (error) {
@@ -34,6 +35,7 @@ export default class AuthController {
             const no_telp = request.input("no_telp")
             const email = request.input("email")
             const password = request.input("password")
+            const role = request.input("role")
 
             const newUser = new User()
 
@@ -41,6 +43,7 @@ export default class AuthController {
             newUser.no_telp = no_telp
             newUser.email = email
             newUser.password = password
+            newUser.role = role
 
             await newUser.save()
 

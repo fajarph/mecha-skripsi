@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.string('no_telp', 255).notNullable()
       table.string('email', 255).notNullable().unique()
       table.string('password', 180).notNullable()
+      table.integer('role').nullable().defaultTo(1)
       table.string('remember_me_token').nullable()
 
       /**
