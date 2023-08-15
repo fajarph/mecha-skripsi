@@ -31,6 +31,9 @@ export default class User extends BaseModel {
   @column()
   public role: number
 
+  @column()
+  public verified: boolean = false
+
   @hasMany(() => Order, {
     foreignKey: 'user_id', // defaults to userId
   })
