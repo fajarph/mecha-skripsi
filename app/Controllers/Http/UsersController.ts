@@ -11,7 +11,7 @@ export default class UsersController {
                 .preload("orders", (query) => {
                     query.select("id", "name_service", "status", "price", "address", "map_url", "created_at")
                 })
-                .select("id", "name", "no_telp", "email")
+                .select("id", "name", "no_telp", "email", "role", "no_rek")
 
             response.status(200).json({
                 status: 200,
@@ -35,7 +35,7 @@ export default class UsersController {
                 .preload("orders", (query) => {
                     query.select("id", "name_service", "status", "price", "address", "createdAt")
                 })
-                .select("id", "name", "no_telp", "email")
+                .select("id", "name", "no_telp", "email", "role", "no_rek")
 
             response.status(200).json({
                 status: 200,
