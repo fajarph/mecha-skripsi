@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { hasMany, HasMany, BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import Price from './Price'
 
 export default class Order extends BaseModel {
   @column({ isPrimary: true })
@@ -12,9 +13,6 @@ export default class Order extends BaseModel {
   public status: string
 
   @column()
-  public price_id: number
-
-  @column()
   public address: string
 
   @column()
@@ -25,6 +23,11 @@ export default class Order extends BaseModel {
 
   @column({ serializeAs: null })
   public user_id: number | null
+
+  @hasMany(() => Price, {
+    foreignKey: 'order_id', // defaults to userId
+  })
+  public prices: HasMany<typeof Price>
 
   @column.dateTime({ 
     autoCreate: true,

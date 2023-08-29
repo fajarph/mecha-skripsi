@@ -1,18 +1,18 @@
 import { DateTime } from 'luxon'
-import { HasMany, hasMany, BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
-import Order from './Order'
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Price extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public harga: string
+  public price: string
 
-  @hasMany(() => Order, {
-    foreignKey: 'price_id', // defaults to userId
-  })
-  public orders: HasMany<typeof Order>
+  @column()
+  public description_service: string
+
+  @column({ serializeAs: null })
+  public order_id: number | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
