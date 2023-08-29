@@ -21,6 +21,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 const { sendOTP, verifyOTP } = require("../app/Controllers/Http/OtpsController")
 const { sendVerificationOTPEmail, verifyUserEmail } = require("../app/Controllers/Http/EmailVerifsController")
+const { sendPasswordResetOTPEmail, resetUserPassword } = require("../app/Controllers/Http/PasswordOtpsController")
 
 Route.get('/', async () => {
   return { msg: 'API Hit Succes' }
@@ -33,6 +34,7 @@ Route.group(() => {
   Route.get("users/token", "UsersController.getUserByToken")
   Route.get("orders", "OrdersController.getOrder")
   Route.post("orders", "OrdersController.createOrder");
+  Route.post("prices", "PricesController.createPrice")
 }).prefix("api");
 
 Route.group(() => {
@@ -96,3 +98,32 @@ Route.group(() => {
     }
   })
 }).prefix("api/email_verification")
+
+Route.group(() => {
+  Route.post('/', async ({ request, response }) => {
+    try {
+      const { email } = request.body()
+
+      if (!email ) throw Error("An email is required.")
+
+      const createPasswordResetOTPEmail = await sendPasswordResetOTPEmail(email)
+
+      response.status(200).json(createPasswordResetOTPEmail)
+    } catch (error) {
+      response.status(400).json(error.message)
+    }
+  })
+
+  Route.post('reset', async ({ request, response }) => {
+    try {
+      const { email, otp, password } = request.body()
+
+      if (!(email && otp && password) ) throw Error("Empty credentials are not allowed.")
+
+      await resetUserPassword({ email, otp, password })
+      response.status(200).json({ email, passwordreset: true})
+    } catch (error) {
+      response.status(400).json(error.message)
+    }
+  })
+}).prefix("v1/api/forget_password")
