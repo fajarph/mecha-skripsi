@@ -7,7 +7,7 @@ export default class OrdersController {
         try {
             await auth.use("api").authenticate()
 
-            const output = await Order.query().select("id", "name_service", "status", "price", "address", "map_url", "created_at")
+            const output = await Order.query().select("id", "name_service", "status", "price_id", "address", "map_url", "created_at")
 
             response.status(200).json({
                 status: 200,
@@ -26,14 +26,14 @@ export default class OrdersController {
             await auth.use("api").authenticate()
 
             const user = auth.use('api').user
-            const { name_service, status, price, address, map_url } = request.all()
+            const { name_service, status, price_id, address, map_url } = request.all()
 
             const newOrder = new Order()
             newOrder.fill({
                 name_service,
                 status,
-                price,
                 address,
+                price_id,
                 map_url,
                 user_id: user?.id
             })

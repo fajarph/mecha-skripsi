@@ -12,7 +12,7 @@ export default class Order extends BaseModel {
   public status: string
 
   @column()
-  public price: string
+  public price_id: number
 
   @column()
   public address: string
@@ -21,7 +21,7 @@ export default class Order extends BaseModel {
   public map_url: string
 
   @column()
-  public : string
+  public sum: string
 
   @column({ serializeAs: null })
   public user_id: number | null
