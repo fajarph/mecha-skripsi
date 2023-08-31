@@ -18,13 +18,13 @@
 |
 */
 
-import Route from '@ioc:Adonis/Core/Route'
+import Route from "@ioc:Adonis/Core/Route"
 const { sendOTP, verifyOTP } = require("../app/Controllers/Http/OtpsController")
 const { sendVerificationOTPEmail, verifyUserEmail } = require("../app/Controllers/Http/EmailVerifsController")
 const { sendPasswordResetOTPEmail, resetUserPassword } = require("../app/Controllers/Http/PasswordOtpsController")
 
-Route.get('/', async () => {
-  return { msg: 'API Hit Succes' }
+Route.get("/", async () => {
+  return { msg: "API Hit Succes" }
 })
 
 Route.group(() => {
@@ -33,12 +33,18 @@ Route.group(() => {
   Route.get("users", "UsersController.getUser")
   Route.get("users/token", "UsersController.getUserByToken")
   Route.get("orders", "OrdersController.getOrder")
-  Route.post("orders", "OrdersController.createOrder");
+  Route.post("orders", "OrdersController.createOrder")
   Route.post("prices", "PricesController.createPrice")
+  Route.get("store", "UsersController.store")
 }).prefix("api");
 
 Route.group(() => {
-  Route.post('/', async ({ request, response }) => {
+  Route.get("chats", "ChatsController.index")
+  Route.post("chats", "ChatsController.store")
+}).prefix("api")
+
+Route.group(() => {
+  Route.post("/", async ({ request, response }) => {
     try {
       const {name, no_telp, email, password, subject, message, duration } = request.all()
 
@@ -58,7 +64,7 @@ Route.group(() => {
     }
   })
   
-  Route.post('verify', async ({ request, response }) => {
+  Route.post("verify", async ({ request, response }) => {
     try {
       let { email, otp } = request.body()
   
@@ -71,7 +77,7 @@ Route.group(() => {
 }).prefix("api/otp")
 
 Route.group(() => {
-  Route.post('/', async ({ request, response }) => {
+  Route.post("/", async ({ request, response }) => {
     try {
       const { email } = request.body()
       
@@ -85,7 +91,7 @@ Route.group(() => {
     }
   })
 
-  Route.post('verify', async ({ request, response }) => {
+  Route.post("verify", async ({ request, response }) => {
     try {
       let { email, otp } = request.body()
 
@@ -100,7 +106,7 @@ Route.group(() => {
 }).prefix("api/email_verification")
 
 Route.group(() => {
-  Route.post('/', async ({ request, response }) => {
+  Route.post("/", async ({ request, response }) => {
     try {
       const { email } = request.body()
 
@@ -114,7 +120,7 @@ Route.group(() => {
     }
   })
 
-  Route.post('reset', async ({ request, response }) => {
+  Route.post("reset", async ({ request, response }) => {
     try {
       const { email, otp, password } = request.body()
 

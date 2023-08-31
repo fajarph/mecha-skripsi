@@ -8,6 +8,7 @@ import {
   HasMany
 } from '@ioc:Adonis/Lucid/Orm'
 import Order from './Order'
+import Chat from './Chat'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -38,9 +39,14 @@ export default class User extends BaseModel {
   public verified: boolean = false
 
   @hasMany(() => Order, {
-    foreignKey: 'user_id', // defaults to userId
+    foreignKey: 'user_id',
   })
   public orders: HasMany<typeof Order>
+
+  @hasMany(() => Chat, {
+    foreignKey: 'user_id',
+  })
+  public chats: HasMany<typeof Chat>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
