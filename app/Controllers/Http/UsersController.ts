@@ -48,4 +48,32 @@ export default class UsersController {
             })
         }
     }
+
+    public async updateProfileUser({ request, response, params, auth }: HttpContextContract) {
+        try {
+            await auth.use("api").authenticate()
+
+            const user = await User.find(params.id)
+
+            if (!user) {
+                return response.status(401).json({msg: 'User not found' })
+            }
+
+            const data = request.only(['email', 'name', 'no_telp'])
+
+            user.merge(data)
+
+            await user.save()
+            
+            return response.json({
+                status: 200,
+                msg: 'User successfully updated',
+                name: user.name,
+                email: user.email,
+                no_telp: user.no_telp 
+            })
+        } catch (error) {
+            return response.status(401).json({msg: 'An error occurred while updating'})
+        }
+    }
 }

@@ -75,6 +75,4 @@ export default class AuthController {
             throw error
         }
     }
-
-    //test bisa po?
 }
