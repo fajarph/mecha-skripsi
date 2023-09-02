@@ -23,7 +23,7 @@ export default class AuthController {
                 return response.status(400).json({
                     message: "Email hasn't been verified yet. Check your inbox",
                     status: 400,
-                });
+                })
             }
 
             return {
@@ -75,4 +75,6 @@ export default class AuthController {
             throw error
         }
     }
+
+    //test bisa po?
 }
