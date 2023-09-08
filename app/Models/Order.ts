@@ -21,6 +21,9 @@ export default class Order extends BaseModel {
   @column()
   public sum: string
 
+  @column()
+  public id_service: string
+
   @column({ serializeAs: null })
   public user_id: number | null
 
