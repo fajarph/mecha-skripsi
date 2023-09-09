@@ -33,6 +33,9 @@ export default class User extends BaseModel {
   public role: number
 
   @column()
+  public img_url: string
+
+  @column()
   public no_rek: string
 
   @column()
