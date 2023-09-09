@@ -7,6 +7,9 @@ export default class Order extends BaseModel {
   public id: number
 
   @column()
+  public name: string
+
+  @column()
   public name_service: string
 
   @column()
@@ -14,6 +17,9 @@ export default class Order extends BaseModel {
 
   @column()
   public address: string
+
+  @column()
+  public img_url: string
 
   @column()
   public map_url: string

@@ -1,16 +1,22 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Order from "App/Models/Order";
 
-const generateRandomValue = (length: number) => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    let result = ''
-  
-    for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length)
-        result += characters.charAt(randomIndex)
+const generateRandomValue = () => {
+    const randomLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const randomNumbers = '0123456789';
+    let result = '';
+
+    for (let i = 0; i < 2; i++) {
+        const randomIndex = Math.floor(Math.random() * randomLetters.length);
+        result += randomLetters.charAt(randomIndex);
     }
-  
-    return result
+
+    for (let i = 0; i < 3; i++) {
+        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
+        result += randomNumbers.charAt(randomIndex);
+    }
+
+    return result;
 }
 
 export default class OrdersController {
@@ -23,10 +29,11 @@ export default class OrdersController {
                 .preload("prices", (query) => {
                     query.select("id", "price", "description_service")
                 })
-                .select("id","id_service", "name_service", "status", "address", "map_url", "created_at", "sum")
+                .select("id", "name", "id_service", "name_service", "status", "address", "map_url", "created_at", "sum", "img_url")
 
             response.status(200).json({
                 status: 200,
+                msg: "Order hit successfully",
                 order: output
             })
         } catch (error) {
@@ -46,10 +53,12 @@ export default class OrdersController {
 
             const newOrder = new Order()
             newOrder.fill({
-                id_service: generateRandomValue(5),
+                name: user?.name,
+                id_service: generateRandomValue(),
                 name_service,
                 status,
                 address,
+                img_url: user?.img_url,
                 map_url,
                 sum,
                 user_id: user?.id
