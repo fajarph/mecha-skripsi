@@ -1,5 +1,5 @@
-import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import User from "App/Models/User";
+import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
+import User from "App/Models/User"
 
 export default class UsersController {
 
@@ -8,8 +8,17 @@ export default class UsersController {
             await auth.use("api").authenticate()
 
             const output = await User.query()
-                .preload("orders", (query) => {
-                    query.select("id", "name_service", "status", "address", "map_url", "created_at")
+                .preload("orders", (orderQuery) => {
+                    orderQuery.select("id", "id_service", "name_service", "status", "address", "map_url", "created_at")
+                    .preload("prices", (priceQuery) => {
+                        priceQuery.select("id", "price", "description_service")
+                    })
+                })
+                .preload("history_orders", (historyQuery) => {
+                    historyQuery.select("id", "id_service", "name_service", "status", "address", "map_url", "created_at")
+                    .preload("prices", (priceQuery) => {
+                        priceQuery.select("id", "price", "description_service")
+                    })
                 })
                 .select("id", "name", "no_telp", "email", "role", "no_rek")
 

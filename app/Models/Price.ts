@@ -14,6 +14,9 @@ export default class Price extends BaseModel {
   @column({ serializeAs: null })
   public order_id: number | null
 
+  @column({ serializeAs: null })
+  public history_id: number | null
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { hasMany, HasMany, BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 import Price from './Price'
 
-export default class Order extends BaseModel {
+export default class HistoryOrder extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -34,7 +34,7 @@ export default class Order extends BaseModel {
   public user_id: number | null
 
   @hasMany(() => Price, {
-    foreignKey: 'order_id',
+    foreignKey: 'history_id',
   })
   public prices: HasMany<typeof Price>
 

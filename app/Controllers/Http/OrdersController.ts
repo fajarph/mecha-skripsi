@@ -1,22 +1,22 @@
-import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import Order from "App/Models/Order";
+import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
+import Order from "App/Models/Order"
 
 const generateRandomValue = () => {
-    const randomLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const randomNumbers = '0123456789';
-    let result = '';
+    const randomLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const randomNumbers = '0123456789'
+    let result = ''
 
     for (let i = 0; i < 2; i++) {
-        const randomIndex = Math.floor(Math.random() * randomLetters.length);
-        result += randomLetters.charAt(randomIndex);
+        const randomIndex = Math.floor(Math.random() * randomLetters.length)
+        result += randomLetters.charAt(randomIndex)
     }
 
     for (let i = 0; i < 3; i++) {
-        const randomIndex = Math.floor(Math.random() * randomNumbers.length);
-        result += randomNumbers.charAt(randomIndex);
+        const randomIndex = Math.floor(Math.random() * randomNumbers.length)
+        result += randomNumbers.charAt(randomIndex)
     }
 
-    return result;
+    return result
 }
 
 export default class OrdersController {
@@ -75,6 +75,25 @@ export default class OrdersController {
             response.status(404).json({
                 status: 404,
                 msg: error.message
+            })
+        }
+    }
+
+    public async deleteOrder({ params, response, auth }: HttpContextContract) {
+        try {
+            await auth.use("api").authenticate()
+            
+            const order = await Order.findByOrFail('id', params.id)
+            await order.delete();
+        
+            return response.status(200).json({
+                status: 200,
+                msg: "Order deleted successfully"
+            })
+        }catch (error) {
+            return response.status(500).json({
+                status: 500,
+                msg: "Order not found or unauthorized"
             })
         }
     }

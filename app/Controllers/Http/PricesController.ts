@@ -1,27 +1,42 @@
-import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
-import Price from "App/Models/Price";
+import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
+import Price from "App/Models/Price"
+import Order from "App/Models/Order"
 
 export default class PricesController {
-    public async createPrice({ request, response, auth} : HttpContextContract) {
+
+    public async createPrice({ request, response, auth, params } : HttpContextContract) {
         try {
             await auth.use("api").authenticate()
 
             const user = auth.use('api').user
             const { price, description_service } = request.all()
+            const { id_service } = params
+
+            if (!user || !user.id) {
+                return response.status(401).json({ msg: 'User not authenticated' })
+            }
+
+            const order = await Order.query()
+                .where('id_service', id_service)
+                .where('user_id', user.id)
+                .first()
+
+            if (!order) {
+                return response.status(404).json({ msg: 'Order not found' })
+            }
 
             const newPrice = new Price()
             newPrice.fill({
                 price,
                 description_service,
-                order_id: user?.id
             })
 
-            await newPrice.save()
+            await order.related('prices').save(newPrice)
 
-            response.status(200).json({
+            return response.status(200).json({
                 status: 200,
-                msg: "Order created successfully",
-                order: newPrice
+                msg: "Price created successfully",
+                price: newPrice,
             })
         } catch (error) {
             response.status(404).json({

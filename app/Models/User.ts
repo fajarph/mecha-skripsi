@@ -9,6 +9,7 @@ import {
 } from '@ioc:Adonis/Lucid/Orm'
 import Order from './Order'
 import Chat from './Chat'
+import HistoryOrder from './HistoryOrder'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -45,6 +46,11 @@ export default class User extends BaseModel {
     foreignKey: 'user_id',
   })
   public orders: HasMany<typeof Order>
+
+  @hasMany(() => HistoryOrder, {
+    foreignKey: 'user_id',
+  })
+  public history_orders: HasMany<typeof HistoryOrder>
 
   @hasMany(() => Chat, {
     foreignKey: 'user_id',

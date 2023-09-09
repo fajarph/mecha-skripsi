@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.string('price').notNullable()
       table.string('description_service').notNullable()
       table.integer('order_id').references('id').inTable('orders').onDelete('CASCADE')
+      table.integer('history_id').references('id').inTable('history_orders').onDelete('CASCADE')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

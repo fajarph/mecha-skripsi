@@ -30,7 +30,7 @@ const sendOTP = async ({email, subject, message, duration = 1 }) => {
             throw Error("Provide values for email, subject, message")
         }
 
-        await Otp.query().where('email', email).delete();
+        await Otp.query().where('email', email).delete()
 
         const generatedOTP = await generateOTP()
 

@@ -28,16 +28,20 @@ Route.get("/", async () => {
 })
 
 Route.group(() => {
-  Route.post("register", "AuthController.register");
-  Route.post("login", "AuthController.login");
+  Route.post("register", "AuthController.register")
+  Route.post("login", "AuthController.login")
   Route.get("users", "UsersController.getUser")
   Route.get("users/token", "UsersController.getUserByToken")
   Route.put("users/update/profile/:id", "UsersController.updateProfileUser")
   Route.get("orders", "OrdersController.getOrder")
   Route.post("orders", "OrdersController.createOrder")
-  Route.post("prices", "PricesController.createPrice")
-  Route.get("store", "UsersController.store")
-}).prefix("api");
+  Route.delete("orders/:id", "OrdersController.deleteOrder")
+  Route.get("histories", "HistoryOrdersController.getHistoryOrder")
+  Route.get("histories/:id", "HistoryOrdersController.getHistoryId")
+  Route.post("histories", "HistoryOrdersController.createHistoryOrder")
+  Route.put("histories/update/status/:id_service", "HistoryOrdersController.updateStatusHistory")
+  Route.post("prices/:id_service", "PricesController.createPrice")
+}).prefix("api")
 
 Route.group(() => {
   Route.get("chats", "ChatsController.index")

@@ -3,27 +3,27 @@ const { sendOTP, verifyOTP, deleteOTP } = require("../Http/OtpsController")
 
 const resetUserPassword = async ({ email, otp, password }) => {
     try {
-        const validOTP = await verifyOTP({ email, otp });
+        const validOTP = await verifyOTP({ email, otp })
 
         if (!validOTP) {
-            throw new Error("Invalid code passed. Check your inbox.");
+            throw new Error("Invalid code passed. Check your inbox.")
         }
 
-        const hashedNewPassword = await (password);
-        const user = await User.findBy('email', email);
+        const hashedNewPassword = await (password)
+        const user = await User.findBy('email', email)
 
         if (!user) {
-            throw new Error("User not found.");
+            throw new Error("User not found.")
         }
 
-        user.password = hashedNewPassword;
-        await user.save();
+        user.password = hashedNewPassword
+        await user.save()
         
-        await deleteOTP(email);
+        await deleteOTP(email)
 
-        return;
+        return
     } catch (error) {
-        throw error;
+        throw error
     }
 }
 

@@ -9,13 +9,13 @@ const verifyUserEmail = async ({email, otp}) => {
             throw Error("Invalid code passed. Check your inbox.")
         }
 
-        const user = await User.findBy("email", email);
+        const user = await User.findBy("email", email)
         if (!user) {
-            throw new Error("User not found.");
+            throw new Error("User not found.")
         }
         
-        user.verified = true;
-        await user.save();
+        user.verified = true
+        await user.save()
 
         await deleteOTP(email)
         return
