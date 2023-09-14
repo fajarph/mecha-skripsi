@@ -11,6 +11,9 @@ export default class Price extends BaseModel {
   @column()
   public description_service: string
 
+  @column()
+  public id_service: string
+
   @column({ serializeAs: null })
   public order_id: number | null
 

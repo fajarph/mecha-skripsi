@@ -12,12 +12,19 @@ export default class HistoryOrdersController {
                 .preload("prices", (query) => {
                     query.select("id", "price", "description_service")
                 })
-                .select("id", "name", "id_service", "name_service", "status", "address", "map_url", "created_at", "sum", "img_url")
+                .select("id", "name", "id_service", "user_id", "name_service", "status", "address", "map_url", "created_at", "sum", "img_url")
+
+            const historiesWithUserId = output.map((history) => {
+                return {
+                    ...history.toJSON(),
+                    user_id: history.user_id,
+                };
+            });
 
             response.status(200).json({
                 status: 200,
                 msg: "History hit successfully",
-                order: output
+                order: historiesWithUserId
             })
         } catch (error) {
             response.status(404).json({
@@ -31,18 +38,25 @@ export default class HistoryOrdersController {
         try {
             await auth.use("api").authenticate()
 
-            const userId = params.id
+            const userId = params.user_id
 
-            const historyOrders = await HistoryOrder.query()
+            const output = await HistoryOrder.query()
                 .where('user_id', userId)
                 .preload("prices", (query) => {
                     query.select("id", "price", "description_service")
-                    })
-                .select("id", "name", "id_service", "name_service", "status", "address", "map_url", "created_at", "sum", "img_url")
+                })
+                .select("id", "name", "id_service", "user_id", "name_service", "status", "address", "map_url", "created_at", "sum", "img_url")
+            
+            const historiesWithUserId = output.map((history) => {
+                return {
+                    ...history.toJSON(),
+                    user_id: history.user_id,
+                };
+            });
 
             response.status(200).json({
                 status: 200,
-                history: historyOrders
+                history: historiesWithUserId
             })
         } catch (error) {
             response.status(401).json({
@@ -57,11 +71,11 @@ export default class HistoryOrdersController {
             await auth.use("api").authenticate()
 
             const user = auth.use('api').user
-            const { name_service, status, address, map_url, sum, id_service } = request.all()
+            const {name, name_service, status, address, map_url, sum, id_service } = request.all()
 
             const newHistory = new HistoryOrder()
             newHistory.fill({
-                name: user?.name,
+                name,
                 id_service,
                 name_service,
                 status,
@@ -84,6 +98,39 @@ export default class HistoryOrdersController {
                 status: 404,
                 msg: error.message
             })
+        }
+    }
+
+    public async updateNameHistory({ request, response, auth, params }: HttpContextContract) {
+        try {
+            await auth.use("api").authenticate()
+
+            const userId = params.user_id
+            const historyId = params.id_service
+        
+            const { name } = request.only(["name"])
+
+            const historyEntries = await HistoryOrder.query()
+                .where('user_id', userId)
+                .where('id_service', historyId)
+                .exec();
+
+            if (!historyEntries || historyEntries.length === 0) {
+                return response.status(404).json({ msg: 'History not found' })
+            }
+
+            for (const history of historyEntries) {
+                history.name = name;
+                await history.save();
+            }
+
+            return response.json({
+                status: 200,
+                msg: 'Name history successfully updated',
+                updatedName: name
+            });
+        } catch (error) {
+            return response.status(401).json({msg: 'An error occurred while updating'})
         }
     }
 

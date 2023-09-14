@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.increments('id').primary()
       table.string('price').notNullable()
       table.string('description_service').notNullable()
+      table.string('id_service').notNullable()
       table.integer('order_id').references('id').inTable('orders').onDelete('CASCADE')
       table.integer('history_id').references('id').inTable('history_orders').onDelete('CASCADE')
 

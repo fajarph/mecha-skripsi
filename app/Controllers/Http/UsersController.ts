@@ -9,13 +9,13 @@ export default class UsersController {
 
             const output = await User.query()
                 .preload("orders", (orderQuery) => {
-                    orderQuery.select("id", "id_service", "name_service", "status", "address", "map_url", "created_at")
+                    orderQuery.select("id", "id_service", "name", "name_service", "status", "address", "map_url", "created_at")
                     .preload("prices", (priceQuery) => {
                         priceQuery.select("id", "price", "description_service")
                     })
                 })
                 .preload("history_orders", (historyQuery) => {
-                    historyQuery.select("id", "id_service", "name_service", "status", "address", "map_url", "created_at")
+                    historyQuery.select("id", "id_service", "name", "name_service", "status", "address", "map_url", "created_at")
                     .preload("prices", (priceQuery) => {
                         priceQuery.select("id", "price", "description_service")
                     })
