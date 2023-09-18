@@ -1,10 +1,10 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
 import User from "App/Models/User"
-const { sendVerificationOTPEmail } = require("../Http/EmailVerifsController")
+// const { sendVerificationOTPEmail } = require("../Http/EmailVerifsController")
 
 export default class AuthController {
 
-    public async login({ request, auth, response }: HttpContextContract) {
+    public async login({ request, auth }: HttpContextContract) {
         try {
             const email = request.input("email")
             const password = request.input("password")
