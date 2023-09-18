@@ -20,7 +20,7 @@ export default class UsersController {
                         priceQuery.select("id", "price", "description_service")
                     })
                 })
-                .select("id", "name", "no_telp", "email", "role", "no_rek")
+                .select("id", "name", "no_telp", "email", "role", "tagihan", "no_rek")
 
             response.status(200).json({
                 status: 200,
@@ -44,7 +44,7 @@ export default class UsersController {
                 .preload("orders", (query) => {
                     query.select("id", "name_service", "status", "address", "createdAt")
                 })
-                .select("id", "name", "no_telp", "email", "role", "no_rek")
+                .select("id", "name", "no_telp", "email", "role", "tagihan", "no_rek")
 
             response.status(200).json({
                 status: 200,
@@ -83,6 +83,35 @@ export default class UsersController {
             })
         } catch (error) {
             return response.status(401).json({msg: 'An error occurred while updating'})
+        }
+    }
+
+    public async updateTagihanUser({ request, response, params, auth }: HttpContextContract) {
+        try {
+            await auth.use("api").authenticate()
+
+            const user = await User.find(params.id)
+
+            if (!user) {
+                return response.status(401).json({msg: 'User not found' })
+            }
+
+            const data = request.only(['tagihan'])
+
+            user.merge(data)
+
+            await user.save()
+            
+            return response.json({
+                status: 200,
+                msg: 'Tagihan successfully updated',
+                updatedTagihan: user.tagihan
+            })
+        } catch (error) {
+            response.status(401).json({
+                status: 401,
+                msg : error.message
+            })
         }
     }
 }

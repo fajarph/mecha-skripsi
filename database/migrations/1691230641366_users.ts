@@ -13,6 +13,7 @@ export default class extends BaseSchema {
       table.integer('role').nullable().defaultTo(1)
       table.string('img_url').defaultTo("https://w7.pngwing.com/pngs/981/645/png-transparent-default-profile-united-states-computer-icons-desktop-free-high-quality-person-icon-miscellaneous-silhouette-symbol-thumbnail.png")
       table.string('no_rek').nullable()
+      table.string('tagihan').defaultTo("0")
       table.boolean('verified').defaultTo(false)
       table.string('remember_me_token').nullable()
 

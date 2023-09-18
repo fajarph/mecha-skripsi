@@ -40,6 +40,9 @@ export default class User extends BaseModel {
   public no_rek: string
 
   @column()
+  public tagihan: string
+
+  @column()
   public verified: boolean = false
 
   @hasMany(() => Order, {

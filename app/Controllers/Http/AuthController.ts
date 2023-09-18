@@ -19,15 +19,16 @@ export default class AuthController {
                 throw Error("Invalid email entered!")
             }
 
-            if (!fetchedUser.verified) {
-                return response.status(400).json({
-                    message: "Email hasn't been verified yet. Check your inbox",
-                    status: 400,
-                })
-            }
+            // if (!fetchedUser.verified) {
+            //     return response.status(400).json({
+            //         message: "Email hasn't been verified yet. Check your inbox",
+            //         status: 400,
+            //     })
+            // }
 
             return {
                 status: 200,
+                id: fetchedUser.id,
                 token: token.token,
                 nama: fetchedUser.name,
                 email: fetchedUser.email,
@@ -63,7 +64,7 @@ export default class AuthController {
                 expiresIn: "1 days",
             })
 
-            await sendVerificationOTPEmail(email)
+            // await sendVerificationOTPEmail(email)
 
             return {
                 status: 200,

@@ -28,7 +28,7 @@ export default class PricesController {
         }
     }
 
-    public async getPriceByIdService({ response, auth, params }: HttpContextContract) {
+    public async getPriceByIdServiceHistories({ response, auth, params }: HttpContextContract) {
         try {
             await auth.use("api").authenticate()
 
